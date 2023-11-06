@@ -1,17 +1,12 @@
 import requests
 
 # Define the URL of your FastAPI application
-url = "http://localhost:8000/generate"
+url = "http://192.168.3.74:5555/generate"
 
 # Prepare the initial request data
 data = {
     "message": "I am feeling very sad today.",
     "history": [],
-    "system_prompt": "Test prompt",
-    "max_new_tokens": 500,
-    "temperature": 0.5,
-    "top_p": 0.9,
-    "top_k": 25
 }
 
 def sendRequest(message):

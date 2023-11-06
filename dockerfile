@@ -21,3 +21,7 @@ EXPOSE 5555
 
 # Start FastAPI app and Celery worker when the container launches
 CMD ["python", "run.py"]
+
+# run using the following command:
+# docker build -t phr-chat .
+# docker run --gpus all -p 5555:5555 phr-chat
