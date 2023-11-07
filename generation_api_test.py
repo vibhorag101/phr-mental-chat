@@ -2,7 +2,6 @@ import requests
 
 # Define the URL of your FastAPI application
 url = "http://192.168.3.74:5555/generate"
-
 # Prepare the initial request data
 data = {
     "message": "I am feeling very sad today.",

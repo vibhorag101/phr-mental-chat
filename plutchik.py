@@ -4,7 +4,7 @@ import pandas as pd
 
 url = 'http://192.168.3.74:5000/predict_sentiment'
 def analyse_sentiment(text):
-    data = {'text': text_to_analyze}
+    data = {'text': text}
     response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
     if response.status_code == 200:
         result = response.json()
@@ -20,6 +20,6 @@ def parse_response(result):
     return predicted_sentiment
 
 if __name__ == "__main__":
-    text_to_analyze = "I am very happy today! The atmosphere looks cheerful."
+    text_to_analyze = "My son is so caring."
     result = analyse_sentiment(text_to_analyze)
     print(result)

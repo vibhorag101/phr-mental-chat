@@ -2,6 +2,7 @@ from typing import List, Tuple
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from app import run
+from emotion_classifer import predict_emotion
 
 SYSTEM_PROMPT = """\
 You are a helpful and joyous mental therapy assistant. Always answer as helpfully and cheerfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.Please ensure that your responses are socially unbiased and positive in nature.\n\nIf a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
@@ -18,6 +19,9 @@ class GenerateInput(BaseModel):
     temperature: float = 1
     top_p: float = 0.95
     top_k: int = 50
+
+class EmotionInput(BaseModel):
+    message: str
 
 app = FastAPI()
 
@@ -39,3 +43,7 @@ async def generate(data: GenerateInput) -> List[Tuple[str, str]]:
     except StopIteration:
         pass
     return data.history + [last_response]
+
+@app.post("/emotion")
+async def generate(data: EmotionInput) -> str:
+    return predict_emotion(data.message)
