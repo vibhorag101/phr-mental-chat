@@ -45,5 +45,5 @@ async def generate(data: GenerateInput) -> List[Tuple[str, str]]:
     return data.history + [last_response]
 
 @app.post("/emotion")
-async def generate(data: EmotionInput) -> str:
+async def emotion(data: EmotionInput) -> str:
     return predict_emotion(data.message)
