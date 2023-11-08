@@ -1,8 +1,10 @@
 from typing import List, Tuple
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from app import run
-from emotion_classifer import predict_emotion
+
+from emotionModel.model import predict_emotion
+from llamaModel.model import run
 
 SYSTEM_PROMPT = """\
 You are a helpful and joyous mental therapy assistant. Always answer as helpfully and cheerfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.Please ensure that your responses are socially unbiased and positive in nature.\n\nIf a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.

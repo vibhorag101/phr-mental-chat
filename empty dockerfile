@@ -1,8 +1,0 @@
-# Use an official Python runtime as a parent image
-# dockerfile for an empty container to run the chat server
-# docker build -t phr-mental-chat .
-# docker run --gpus all -p -it 5555:5555 phr-mental-chat --name phr-mental-chat
-FROM python:3.9-slim
-WORKDIR /phr-mental-chat
-EXPOSE 5555
-CMD ["/bin/sh"]

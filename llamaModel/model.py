@@ -1,8 +1,10 @@
+import re
 from threading import Thread
 from typing import Iterator
-import re
+
 import torch
-from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer, TextIteratorStreamer, pipeline
+from transformers import (AutoConfig, AutoModelForCausalLM, AutoTokenizer,
+                          TextIteratorStreamer, pipeline)
 
 model_id = 'vibhorag101/llama-2-13b-chat-hf-phr_mental_therapy'
 

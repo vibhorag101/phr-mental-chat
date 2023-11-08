@@ -3,7 +3,7 @@ from typing import Iterator
 import gradio as gr
 import torch
 
-from model import get_input_token_length, run
+from llamaModel.model import get_input_token_length, run
 
 DEFAULT_SYSTEM_PROMPT = """\
 You are a helpful and joyous mental therapy assistant. Always answer as helpfully and cheerfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.Please ensure that your responses are socially unbiased and positive in nature.\n\nIf a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
@@ -68,7 +68,7 @@ def check_input_token_length(message: str, chat_history: list[tuple[str, str]], 
         raise gr.Error(f'The accumulated input is too long ({input_token_length} > {MAX_INPUT_TOKEN_LENGTH}). Clear your chat history and try again.')
 
 
-with gr.Blocks(css='style.css') as demo:
+with gr.Blocks(css='chatBot/style.css') as demo:
     gr.Markdown(DESCRIPTION)
     with gr.Group():
         chatbot = gr.Chatbot(label='Chatbot')

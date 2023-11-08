@@ -1,5 +1,5 @@
-from api import app
-from app import demo
+from fastAPI.api import app
+from chatBot.app import demo
 import gradio as gr
 import uvicorn
 
