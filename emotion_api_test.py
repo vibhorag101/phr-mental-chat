@@ -1,5 +1,6 @@
 import requests
 import json
+from generation_api_test import sendRequest
 
 # Just to show usage of the emotion API.
 # Although can just import the model from emotion_classifier.py in the application.
@@ -13,6 +14,12 @@ def analyse_sentiment(text):
     else:
         print(f"Request failed with status code: {response.status_code}")
 
+def analyse_sentiment_model(text):
+    print("Query: "+text)
+    response = sendRequest(text)
+    print("Response: "+response)
+    print("Emotion in response: "+analyse_sentiment(response))
+
 if __name__ == "__main__":
-    print(analyse_sentiment("I have not eaten anything since 10 days. I am dying."))
-    print(analyse_sentiment("I got a first rank in my class today."))
+    analyse_sentiment_model("I am feeling very sad today.")
+    analyse_sentiment_model("I lost so much money in a fire at my factory.")
