@@ -33,3 +33,10 @@ CMD ["python", "run.py"]
 # EXPOSE 5555
 # CMD ["/bin/sh"]
 ################################################
+
+#### RUNNING THE APP MANUALLY ####
+# python run.py
+
+## USING accelerated library
+# accelerate config
+# accelerate launch run.py
