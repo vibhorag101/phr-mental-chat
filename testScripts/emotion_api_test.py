@@ -23,4 +23,4 @@ def analyse_sentiment_model(text):
 if __name__ == "__main__":
     print(analyse_sentiment("I am feeling very sad today."))
     print(analyse_sentiment("I lost so much money in a fire at my factory."))
-    print(analyse_sentiment("My son is so cute"))
+    print(analyse_sentiment("My son is so caring."))
