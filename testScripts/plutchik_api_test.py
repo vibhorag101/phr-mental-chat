@@ -20,6 +20,6 @@ def parse_response(result):
     return predicted_sentiment
 
 if __name__ == "__main__":
-    text_to_analyze = "My son is so caring."
-    result = analyse_sentiment(text_to_analyze)
-    print(result)
+    print(analyse_sentiment("I am feeling very sad today."))
+    print(analyse_sentiment("I lost so much money in a fire at my factory."))
+    print(analyse_sentiment("My son is so caring."))

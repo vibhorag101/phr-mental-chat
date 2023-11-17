@@ -16,6 +16,11 @@ def sendRequest(message):
     data["history"] = history
     return data["history"][-1][1]
 
+def getConversation(text):
+    print("Query: "+text)
+    response = sendRequest(text)
+    print("Response: "+response)
+
 if __name__=="__main__":
-    print(sendRequest("I am feeling very sad today."))
-    print(sendRequest("I lost so much money in a fire at my factory."))
+    getConversation("I am feeling very sad today.")
+    getConversation("I lost so much money in a fire at my factory.")
