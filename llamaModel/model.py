@@ -1,6 +1,7 @@
 import re
 from threading import Thread
 from typing import Iterator
+from suicideModel.model import predict_suicide
 
 import torch
 from transformers import (AutoConfig, AutoModelForCausalLM, AutoTokenizer,
@@ -54,7 +55,7 @@ def run(message: str,
     
     # check if message contains any variations of the word suicide. If they do, then simply tell to consult a doctor.
     # as the things can be serious.
-    if re.search(r'suicid[a-z]*', message, re.I):
+    if predict_suicide(message)=='suicide':
         yield "I am sorry that you are feeling this way. You need a specialist help. Please consult a nearby doctor."
     else:
         prompt = get_prompt(message, chat_history, system_prompt)

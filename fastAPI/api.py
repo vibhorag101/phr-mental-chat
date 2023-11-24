@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from emotionModel.model import predict_emotion
 from llamaModel.model import run
+from suicideModel.model import predict_suicide
 
 SYSTEM_PROMPT = """\
 You are a helpful and joyous mental therapy assistant. Always answer as helpfully and cheerfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.Please ensure that your responses are socially unbiased and positive in nature.\n\nIf a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
@@ -49,3 +50,7 @@ async def generate(data: GenerateInput) -> List[Tuple[str, str]]:
 @app.post("/emotion")
 async def emotion(data: EmotionInput) -> str:
     return predict_emotion(data.message)
+
+@app.post("/suicide")
+async def emotion(data: EmotionInput) -> str:
+    return predict_suicide(data.message)
