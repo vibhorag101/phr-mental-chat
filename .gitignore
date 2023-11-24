@@ -1,3 +1,6 @@
 /gradio_cached_examples
 /venv
 __pycache__/
+finetuneModel/Model
+finetuneModel/PHR_Suicide_Prediction_Roberta
+finetuneModel/wandb
