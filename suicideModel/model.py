@@ -1,7 +1,6 @@
 from transformers import pipeline
 
-# Using https://huggingface.co/SamLowe/roberta-base-go_emotions
-# Can classify 28 emotions
+# can classify 2 emotions (suicidal, non-suicidal)
 def predict_suicide(text):
     classifier = pipeline(task="text-classification", model="vibhorag101/roberta-base-suicide-prediction-phr",device_map="auto")
     emotions = classifier(text)
