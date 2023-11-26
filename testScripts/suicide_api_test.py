@@ -1,8 +1,6 @@
 import requests
 import json
 
-# Just to show usage of the emotion API.
-# Although can just import the model from emotion_classifier.py in the application.
 url = 'http://192.168.3.74:5555/suicide'
 def analyze_suicide_sentiment(text):
     data = {'message': text}
