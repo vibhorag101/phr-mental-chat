@@ -24,7 +24,7 @@ CMD ["python", "run.py"]
 
 #### COMANDS TO RUN ####
 # docker build -t phr-chat .
-# docker run --gpus all -p 5555:5555 phr-chat
+# docker run -it -d --gpus all -p 5555:5555 phr-chat
 ###############################################
 
 ### For development, just getting a container and then installing manually, and run run.py using screen ###
@@ -32,6 +32,8 @@ CMD ["python", "run.py"]
 # WORKDIR /phr-mental-chat
 # EXPOSE 5555
 # CMD ["/bin/sh"]
+ ### run using
+#docker run -it -d --gpus all -p 5000:5000 phr-plutchik
 ################################################
 
 #### RUNNING THE APP MANUALLY ####
