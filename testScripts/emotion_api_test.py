@@ -8,11 +8,11 @@ url = 'http://192.168.3.74:5555/emotion'
 def analyse_sentiment(text):
     data = {'message': text}
     response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
-    if response.status_code == 200:
-        result = response.json()
-        return(result)
-    else:
-        print(f"Request failed with status code: {response.status_code}")
+    # if response.status_code == 200:
+    result = response.json()
+    return(result)
+    # else:
+        # print(f"Request failed with status code: {response.status_code}")
 
 def analyse_sentiment_model(text):
     print("Query: "+text)
