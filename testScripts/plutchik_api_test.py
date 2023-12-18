@@ -7,7 +7,7 @@ def analyse_sentiment(text):
     data = {'text': text}
     response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
     if response.status_code == 200:
-        emotions = response.json().get('columns', [])
+        emotions = response.json().get('emotions', [])
         return(emotions)
     else:
         print(f"Request failed with status code: {response.status_code}")
