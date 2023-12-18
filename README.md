@@ -13,6 +13,7 @@ docker run --gpus all -p 5555:5555 {image_name}
 ```
 - Chatbot will be accessible at `http://{server_ip}:5555/gradio`
 - Chatbot API will be accessible at `http://{server_ip}:5555/generate`
-- Emotion Classification api will be accessible at `http://{server_ip}:5555/emotion`
+- Roberta Emotion Classification api will be accessible at `http://{server_ip}:5555/emotion`
 - Suicide Prediction api will be accessible at `http://{server_ip}:5555/suicide`
+- Plutchik Emotion API available at `http://192.168.3.74:5000/predict_sentiment'` and `http://192.168.3.74:5000/predict_sentiment_scores`
 - The API docs are available at `http://{server_ip}:5555/docs`
