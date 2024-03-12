@@ -24,3 +24,4 @@ def getConversation(text):
 if __name__=="__main__":
     getConversation("I am feeling very sad today.")
     getConversation("I lost so much money in a fire at my factory.")
+    getConversation("I dont want to live anymore.")
