@@ -77,6 +77,7 @@ training_arguments = TrainingArguments(
     output_dir=output_dir,
     num_train_epochs=num_train_epochs,
     per_device_train_batch_size=per_device_train_batch_size,
+    per_device_eval_batch_size=per_device_eval_batch_size,
     evaluation_strategy="steps",
     save_steps=save_steps,
     eval_steps=eval_steps,
@@ -99,11 +100,12 @@ training_arguments = TrainingArguments(
 model = AutoModelForCausalLM.from_pretrained(
     base_model,
     quantization_config=bnb_config,
-    device_map=device_map
+    device_map=device_map,
+    attn_implementation="flash_attention_2"
 )
 tokenizer = AutoTokenizer.from_pretrained(base_model)
-# We need to add the pad token, as the default tokenizer does not have it.
-tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+tokenizer.add_special_tokens({"pad_token": "<pad>"})
+model.resize_token_embeddings(len(tokenizer))
 
 #Set supervised fine-tuning parameters
 trainer = SFTTrainer(

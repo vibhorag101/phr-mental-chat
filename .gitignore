@@ -4,6 +4,6 @@ __pycache__/
 finetuneModel/wandb
 autotrain-venv/
 .vscode/
-makind/
-mankind/
 myenv/
+finetuneModel/results
+finetuneModel/llama-2-7b-chat-hf-phr_mental_therapy-2

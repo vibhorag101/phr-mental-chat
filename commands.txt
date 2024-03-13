@@ -1,1 +1,2 @@
 huggingface-cli delete-cache
+docker run --gpus all -p 6006:6006 -itd --name "phr-chat-ai" c366b6937df4
