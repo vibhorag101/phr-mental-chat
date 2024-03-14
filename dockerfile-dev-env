@@ -49,12 +49,8 @@ RUN apt-get update && \
 
 WORKDIR /workspace
 
-RUN git clone --depth=1 https://github.com/OpenAccess-AI-Collective/axolotl.git
-
-WORKDIR /workspace/axolotl
-
 # If AXOLOTL_EXTRAS is set, append it in brackets
-RUN pip install -r requirements.txt
+RUN pip install -r https://gist.githubusercontent.com/vibhorag101/306cd72f84b761947a6b268e2918ec91/raw/6c727419189f2af81222b44c1aaa0cc2b916b7e8/requirements.txt
 
 # fix so that git fetch/pull from remote works
 RUN git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" && \

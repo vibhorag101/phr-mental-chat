@@ -1,0 +1,6 @@
+1. huggingface-cli delete-cache
+2. docker build -t {image_name} .
+3. docker run --gpus all -p 6006:6006 -itd --name "phr-chat-ai" c366b6937df4
+4. HuggingFace TGI is a bit buggged, we need to change content.strip() to content in tokenizer_config.json
+5. For creating dev container we use "dockerfile-dev-env" to create an image using 2 , and run the container using 3.
+5.1 We have added the requirements.txt to github gist and use it above.

@@ -1,4 +1,5 @@
 #!/bin/bash
+# running inference using https://github.com/huggingface/text-generation-inference
 # make executable using chmod u+x run_tgi.sh
 # run using ./run_tgi.sh
 # pull using docker pull ghcr.io/huggingface/text-generation-inference:sha-8a5bcba

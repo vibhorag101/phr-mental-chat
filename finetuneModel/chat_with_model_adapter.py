@@ -34,11 +34,18 @@ model = PeftModel.from_pretrained(base_model, new_model_name)
 conv = [ { "content": "You are a helpful and joyous mental therapy assistant. Always answer as helpfully and cheerfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.Please ensure that your responses are socially unbiased and positive in nature.\n\nIf a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.", "role": "system" }]
 
 def generate_response(conv,model,tokenizer):
+    # if we set tokenize=False, only the chat template is applied.
+    # no tokenization is done, and we get string insted of token ids.
     prompt = tokenizer.apply_chat_template(conv,tokenize=False)
-    input_ids = tokenizer.encode(prompt, return_tensors="pt")
-    input_ids = input_ids.to('cuda')
+    # THe model.generate() takes token input_ids, attention_mask, and other parameters
+    # and returns output token ids of the generated response.
+    # although we can also pass only input_ids using tokenizer.encode(prompt, return_tensors="pt")
+    inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+    input_ids = inputs["input_ids"]
+    attention_mask = inputs["attention_mask"]
     output_ids = model.generate(
-    input_ids,
+    input_ids=input_ids,
+    attention_mask=attention_mask,
     max_length=1024,
     do_sample=True,
     top_p=0.95,
