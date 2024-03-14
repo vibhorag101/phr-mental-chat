@@ -11,24 +11,32 @@ You are a helpful and joyous mental therapy assistant. Always answer as helpfull
 """
 history = [{"role": "system", "content": SYSTEM_PROMPT}]
 
-# make the following function to be able to stream the response
 def chat_with_tgi(prompt, history=history):
     history.append({"role": "user", "content": prompt.strip()})
     chat_completion = client.chat.completions.create(
-        model="tgi",
-        messages=history,
-        stream=True
+        model="tgi", messages=history, stream=True
     )
     response = ""
+    first_chunk = True
     for chunk in chat_completion:
-        print(chunk.choices[0].delta)
-        response += chunk.choices[0].delta.content
-    yield response
+        token = chunk.choices[0].delta.content
+        if first_chunk:
+            token= token.strip() ## the first token Has a leading space, due to some bug in TGI
+            print("TGI:", end="", flush=True)
+            print(token, end="", flush=True)  
+            response += token
+            first_chunk = False
+        else:
+            if token!="</s>":
+                response += token
+                print(token, end="", flush=True)  
+
+    response = response.strip()
+    history.append({"role": "assistant", "content": response})
+    print()  # Add a newline character at the end
 
 while True:
     input_text = input("You: ")
     if input_text == "exit":
         break
-    for response in chat_with_tgi(input_text, history=history):
-        # print("TGI:",response)
-        history.append({"role": "assistant", "content": response})
+    chat_with_tgi(input_text, history=history)

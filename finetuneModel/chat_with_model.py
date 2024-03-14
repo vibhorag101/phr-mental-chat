@@ -22,8 +22,7 @@ bnb_config = BitsAndBytesConfig(
 
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
-    quantization_config=bnb_config,
-    attn_implementation="flash_attention_2"
+    quantization_config=bnb_config
 )
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -46,7 +45,7 @@ def generate_response(conv,model,tokenizer):
     max_length=1024,
     do_sample=True,
     top_p=0.95,
-    top_k=30,
+    top_k=50,
     temperature=1)
     output_text = tokenizer.decode(output_ids[0][input_ids.shape[1]:], skip_special_tokens=True)
     return output_text
@@ -54,7 +53,7 @@ def generate_response(conv,model,tokenizer):
 def chat_with_model(user_input,conv,model,tokenizer):
     conv.append({"content": user_input, "role": "user"})
     response = generate_response(conv,model,tokenizer)
-    print("Model:", response)
+    print("Model:",response)
     conv.append({"content": response, "role": "assistant"})
 
 
