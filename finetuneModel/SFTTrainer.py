@@ -78,7 +78,7 @@ peft_config = LoraConfig(
 
 training_arguments = TrainingArguments(
     output_dir=output_dir,
-    hub_model_id=new_model_name, ## the name of repo in huggingface pushed by Trainer otherwise output_dir is used
+    # hub_model_id=new_model_name, ## the name of repo in huggingface pushed by Trainer otherwise output_dir is used
     num_train_epochs=num_train_epochs,
     per_device_train_batch_size=per_device_train_batch_size,
     per_device_eval_batch_size=per_device_eval_batch_size,

@@ -8,7 +8,7 @@ from transformers import (AutoModelForCausalLM, AutoTokenizer,
                           TrainingArguments, logging, pipeline)
 from trl import SFTTrainer
 
-model_name = "vibhorag101/llama-2-7b-chat-hf-phr_mental_therapy"
+model_name = "vibhorag101/llama-2-7b-chat-hf-phr_mental_therapy_v2"
 use_4bit=True
 device_map = {"": 0}
 bnb_config = BitsAndBytesConfig(
@@ -23,6 +23,7 @@ bnb_config = BitsAndBytesConfig(
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
     quantization_config=bnb_config,
+    attn_implementation="flash_attention_2"
 )
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 

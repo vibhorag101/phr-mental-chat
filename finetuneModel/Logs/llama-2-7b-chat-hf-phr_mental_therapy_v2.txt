@@ -126,3 +126,9 @@ trainer = SFTTrainer(
 trainer.train()
 trainer.save_model(new_model_name)
 trainer.push_to_hub(new_model_name)
+
+
+
+### Had 22000 Train Steps and 4300 Eval Steps
+### However did only about 12000 Train Steps due to Early Stopping
+### Early Stopping was applied with patience 3 and threshold 0.001
