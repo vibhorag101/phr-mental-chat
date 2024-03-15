@@ -1,9 +1,8 @@
 from transformers import pipeline
-
-# Using https://huggingface.co/SamLowe/roberta-base-go_emotions
+classifier = pipeline(task="text-classification", model="vibhorag101/roberta-base-emotion-prediction-phr", top_k=None,device_map="auto")
 # Can classify 28 emotions
 def predict_emotion(text):
-    classifier = pipeline(task="text-classification", model="vibhorag101/roberta-base-emotion-prediction-phr", top_k=None,device_map="auto")
+
     emotions = classifier(text)[0]
     print(emotions)
     res = []

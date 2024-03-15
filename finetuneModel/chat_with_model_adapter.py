@@ -9,7 +9,7 @@ from transformers import (AutoModelForCausalLM, AutoTokenizer,
 from trl import SFTTrainer
 
 base_model_name = "meta-llama/Llama-2-7b-chat-hf"
-new_model_name = "llama-2-7b-chat-hf-phr_mental_therapy-3"
+adapter_name = "llama-2-7b-chat-hf-phr_mental_therapy-3"
 use_4bit=True
 device_map = {"": 0}
 bnb_config = BitsAndBytesConfig(
@@ -26,9 +26,9 @@ base_model = AutoModelForCausalLM.from_pretrained(
     quantization_config=bnb_config,
 )
 ## To account for pad tokens added to the model while fine-tuning
-tokenizer = AutoTokenizer.from_pretrained(new_model_name)
+tokenizer = AutoTokenizer.from_pretrained(adapter_name)
 base_model.resize_token_embeddings(len(tokenizer))
-model = PeftModel.from_pretrained(base_model, new_model_name)
+model = PeftModel.from_pretrained(base_model, adapter_name)
 
 
 conv = [ { "content": "You are a helpful and joyous mental therapy assistant. Always answer as helpfully and cheerfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.Please ensure that your responses are socially unbiased and positive in nature.\n\nIf a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.", "role": "system" }]
@@ -36,10 +36,10 @@ conv = [ { "content": "You are a helpful and joyous mental therapy assistant. Al
 def generate_response(conv,model,tokenizer):
     # if we set tokenize=False, only the chat template is applied.
     # no tokenization is done, and we get string insted of token ids.
-    prompt = tokenizer.apply_chat_template(conv,tokenize=False)
     # THe model.generate() takes token input_ids, attention_mask, and other parameters
     # and returns output token ids of the generated response.
     # although we can also pass only input_ids using tokenizer.encode(prompt, return_tensors="pt")
+    prompt = tokenizer.apply_chat_template(conv,tokenize=False)
     inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
     input_ids = inputs["input_ids"]
     attention_mask = inputs["attention_mask"]

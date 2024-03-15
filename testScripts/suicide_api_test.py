@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = 'http://192.168.3.74:5555/suicide'
+url = 'http://192.168.3.74:6006/suicide'
 def analyze_suicide_sentiment(text):
     data = {'message': text}
     response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'})

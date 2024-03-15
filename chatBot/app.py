@@ -1,11 +1,10 @@
 import os
 from threading import Thread
 from typing import Iterator
-from llamaModel.model import get_input_token_length, run
 import gradio as gr
-import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from suicideModel.model import predict_suicide
+from openai import OpenAI
+import requests, json
 
 MAX_MAX_NEW_TOKENS = 2048
 DEFAULT_MAX_NEW_TOKENS = 1024
@@ -17,32 +16,71 @@ You are a helpful and joyous mental therapy assistant. Always answer as helpfull
 DESCRIPTION = """
 # LLama-2-Mental-Therapy-Chatbot
 """
-LICENSE = "open-source"
 
+client = OpenAI(
+    base_url="http://192.168.3.74:8080/v1",
+    api_key="-"
+)
+
+def predict_suicide(text):
+    url = 'http://192.168.3.74:6006/suicide'
+    data = {'message': text}
+    response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
+    if response.status_code == 200:
+        result = response.json()
+        return(result)
+    
+def predict_threat(text):
+    url = 'http://192.168.3.74:6006/threat'
+    data = {'message': text}
+    response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
+    if response.status_code == 200:
+        result = response.json()
+        return(result)
+    
+def response_guard(message):
+    if os.getenv("PREDICT_SUICIDE")=="True" and predict_suicide(message)=='suicide':
+        return("I am sorry that you are feeling this way. You need a specialist help. Please consult a nearby doctor.")
+    if os.getenv("PREDICT_THREAT")=="True" and predict_threat(message)=='threat':
+        return("We detected unlawful language and intentions in the conversation.")
+
+    return("safe")
+    
 def generate(
     message: str,
     chat_history: list[tuple[str, str]],
     system_prompt: str,
     max_new_tokens: int = 1024,
-    temperature: float = 0.6,
+    temperature: float = 1,
     top_p: float = 0.9,
-    top_k: int = 50
 ) -> Iterator[str]:
-    # if predict_suicide(message)=='suicide':
-    #     yield("I am sorry that you are feeling this way. You need a specialist help. Please consult a nearby doctor.")
-    # else:
-    conversation = []
-    if system_prompt:
-        conversation.append({"role": "system", "content": system_prompt})
-    for user, assistant in chat_history:
-        conversation.extend([{"role": "user", "content": user}, {"role": "assistant", "content": assistant}])
-    conversation.append({"role": "user", "content": message})
-    if(get_input_token_length(conversation) > MAX_INPUT_TOKEN_LENGTH):
-        raise gr.InterfaceError(f"The accumulated input is too long ({get_input_token_length(conversation)} > {MAX_INPUT_TOKEN_LENGTH}). Clear your chat history and try again.")
-    generator = run(conversation, max_new_tokens, temperature, top_p, top_k)
-    for response in generator:
-        yield response
-    
+    llmGuardCheck = response_guard(message)
+    if(llmGuardCheck != "safe"):
+        raise gr.Error(llmGuardCheck)
+        yield(llmGuardCheck)
+    else:
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        for user, assistant in chat_history:
+            messages.extend([{"role": "user", "content": user}, {"role": "assistant", "content": assistant}])
+        messages.append({"role": "user", "content": message})
+        chat_completion = client.chat.completions.create(
+            model="tgi", messages=messages, stream=True,max_tokens=max_new_tokens,temperature=temperature,top_p=top_p
+        )
+        response = ""
+        first_chunk = True
+        for chunk in chat_completion:
+            token = chunk.choices[0].delta.content
+            if first_chunk:
+                token= token.strip() ## the first token Has a leading space, due to some bug in TGI
+                response += token
+                yield response
+                first_chunk = False
+            else:
+                if token!="</s>":
+                    response += token
+                    yield response
 
 
 chat_interface = gr.ChatInterface(
@@ -72,28 +110,13 @@ chat_interface = gr.ChatInterface(
             step=0.05,
             value=0.95,
         ),
-        gr.Slider(
-            label="Top-k",
-            minimum=1,
-            maximum=1000,
-            step=1,
-            value=50,
-        ),
     ],
     stop_btn="Stop",
-    # examples=[
-    #     ["Hello there! How are you doing?"],
-    #     ["Can you explain briefly to me what is the Python programming language?"],
-    #     ["Explain the plot of Cinderella in a sentence."],
-    #     ["How many hours does it take a man to eat a Helicopter?"],
-    #     ["Write a 100-word article on 'Benefits of Open-Source in AI research'"],
-    # ],
 )
 
 with gr.Blocks(css="style.css") as demo:
     gr.Markdown(DESCRIPTION)
     chat_interface.render()
-    gr.Markdown(LICENSE)
-
+    
 if __name__ == "__main__":
     demo.queue(max_size=20).launch()
