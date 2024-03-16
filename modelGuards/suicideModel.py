@@ -1,5 +1,5 @@
 from transformers import pipeline
-classifier = pipeline(task="text-classification", model="vibhorag101/roberta-base-suicide-prediction-phr",device_map="auto")
+classifier = pipeline(task="text-classification", model="vibhorag101/roberta-base-suicide-prediction-phr-v2",device_map="auto")
 # can classify 2 emotions (suicidal, non-suicidal)
 def predict_suicide(text):
     emotions = classifier(text)

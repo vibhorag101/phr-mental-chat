@@ -1,11 +1,12 @@
 import re
 from threading import Thread
 from typing import Iterator, List,Dict
-
+import os
 import torch
 from transformers import (AutoConfig, AutoModelForCausalLM, AutoTokenizer,
                           TextIteratorStreamer, pipeline,BitsAndBytesConfig)
 
+MAX_INPUT_TOKEN_LENGTH = 4096
 model_name = "vibhorag101/llama-2-7b-chat-hf-phr_mental_therapy_v2"
 use_4bit=True
 device_map = {"": 0}
@@ -35,6 +36,8 @@ def get_LLAMA_response_stream(
     
     prompt = tokenizer.apply_chat_template(messages,tokenize=False)
     inputs = tokenizer(prompt, return_tensors='pt', add_special_tokens=False).to('cuda')
+    if(len(inputs["input_ids"])> MAX_INPUT_TOKEN_LENGTH):
+        raise ValueError(f"Input token length is {inputs['input_ids'].shape[1]}, which exceeds the maximum of {MAX_INPUT_TOKEN_LENGTH}.")
     streamer = TextIteratorStreamer(tokenizer,
                                     timeout=10.,
                                     skip_prompt=True,
@@ -67,6 +70,8 @@ def get_LLAMA_response(
     prompt = tokenizer.apply_chat_template(messages,tokenize=False)
     inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
     input_ids = inputs["input_ids"]
+    if(len(input_ids) > MAX_INPUT_TOKEN_LENGTH):
+        raise ValueError(f"Input token length is {inputs['input_ids'].shape[1]}, which exceeds the maximum of {MAX_INPUT_TOKEN_LENGTH}.")
     output_ids = model.generate(
     **inputs,
     max_length=1024,
