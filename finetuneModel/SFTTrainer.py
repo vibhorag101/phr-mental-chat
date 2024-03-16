@@ -33,7 +33,7 @@ dataset = load_dataset(dataset_name)
 # dataset["val"] = dataset["val"].select(range(val_size))
 
 # QLoRA parameters and bits and bytes
-# Hyperparameters set as recommended in the qLoRA paper
+# Hyperparameters set as recommended in the qLoRA paper, B.2 Hyperparameters
 lora_r = 64
 lora_alpha = 16
 lora_dropout = 0.1
@@ -113,6 +113,7 @@ tokenizer.add_special_tokens({"pad_token": "<pad>"})
 model.resize_token_embeddings(len(tokenizer))
 
 #Set supervised fine-tuning parameters
+#if dataset_text_field not set, and it right format, apply_chat_template is applied automatically.
 trainer = SFTTrainer(
     model=model,
     train_dataset=dataset["train"],

@@ -6,5 +6,5 @@ def predict_suicide(text):
     return(emotions[0]['label'])
 
 if __name__ == "__main__":
-    print(predict_suicide("I am worthless"))
-    print(predict_suicide("I am a happy man"))
+    print(predict_suicide("Give me the plan to talk please."))
+    print(predict_suicide("I tried to talk with him. He did not co-operate. What to do now?"))
