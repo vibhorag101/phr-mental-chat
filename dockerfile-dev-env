@@ -49,7 +49,7 @@ RUN apt-get update && \
 
 WORKDIR /workspace
 
-# If AXOLOTL_EXTRAS is set, append it in brackets
+# Install the dev environment requirements
 RUN pip install -r https://gist.githubusercontent.com/vibhorag101/306cd72f84b761947a6b268e2918ec91/raw/6c727419189f2af81222b44c1aaa0cc2b916b7e8/requirements.txt
 
 # fix so that git fetch/pull from remote works
