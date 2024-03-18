@@ -1,4 +1,3 @@
-import os
 from threading import Thread
 from typing import Iterator
 import gradio as gr
@@ -37,13 +36,14 @@ def predict_threat(text):
         result = response.json()
         return(result)
     
-def response_guard(message):
-    if os.getenv("PREDICT_SUICIDE")=="True" and predict_suicide(message)=='suicide':
-        return("I am sorry that you are feeling this way. You need a specialist help. Please consult a nearby doctor.")
-    if os.getenv("PREDICT_THREAT")=="True" and predict_threat(message)=='threat':
-        return("We detected unlawful language and intentions in the conversation.")
+def response_guard(text):
+    url = 'http://192.168.3.74:6006/safety'
+    data = {'message': text}
+    response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
+    if response.status_code == 200:
+        result = response.json()
+        return(result)
 
-    return("safe")
     
 def generate(
     message: str,

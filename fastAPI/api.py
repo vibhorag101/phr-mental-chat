@@ -3,7 +3,7 @@ import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 # from modelGuards.emotionModel import predict_emotion
-from modelGuards.suicideModel import predict_suicide
+from modelGuards.suicideModel import predictSuicide
 from modelGuards.threatModel import predictThreat
 
 SYSTEM_PROMPT = """\
@@ -46,8 +46,17 @@ if(os.getenv("USE_LOCAL_MODEL")=="True"):
 
 @app.post("/suicide")
 async def emotion(data: EmotionInput) -> str:
-    return predict_suicide(data.message)
+    return predictSuicide(data.message)
 
 @app.post("/threat")
 async def emotion(data: EmotionInput) -> str:
     return predictThreat(data.message)
+
+@app.post("/safety")
+async def checkSafety(data:EmotionInput) -> str:
+    if os.getenv("PREDICT_SUICIDE")=="True" and predictSuicide(data.message)=='suicide':
+        return("I am sorry that you are feeling this way. You need a specialist help. Please consult a nearby doctor.")
+    if os.getenv("PREDICT_THREAT")=="True" and predictThreat(data.message)=='threat':
+        return("We detected unlawful language and intentions in the conversation.")
+    
+    return("safe")
