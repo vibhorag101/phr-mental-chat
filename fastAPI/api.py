@@ -17,13 +17,6 @@ MAX_INPUT_TOKEN_LENGTH = 4096
 class textInput(BaseModel):
     message: str
 
-class OpenAIInput(BaseModel):
-    messages: List[Dict[str, str]]
-
-client = OpenAI(
-    base_url="http://192.168.3.74:8080/v1",
-    api_key="-"
-)
 
 app = FastAPI()
 
@@ -71,14 +64,24 @@ async def checkSafety(data:textInput) -> str:
     return("safe")
 
 # using the tgi-server response and serving using fastAPI, for a single endpoint.
-@app.post("/chat_response")
-async def getOpenAIResponse(data:OpenAIInput) -> str:
-    chat_completion = client.chat.completions.create(
-        model="tgi",
-        messages=data.messages,
-        max_tokens=1024,
-        temperature=1,
-        top_p=0.9
-    )
-    response = chat_completion.choices[0].message.content.strip()
-    return response
+
+if(os.getenv("USE_LOCAL_MODEL")=="False"):
+    client = OpenAI(
+    base_url="http://192.168.3.74:8080/v1",
+    api_key="-")
+
+    class OpenAIInput(BaseModel):
+        # the dictionary keys must be role:"system,user,assistant" and content
+        messages: List[Dict[str, str]]
+
+    @app.post("/chat_response")
+    async def getOpenAIResponse(data:OpenAIInput) -> str:
+        chat_completion = client.chat.completions.create(
+            model="tgi",
+            messages=data.messages,
+            max_tokens=1024,
+            temperature=1,
+            top_p=0.9
+        )
+        response = chat_completion.choices[0].message.content.strip()
+        return response

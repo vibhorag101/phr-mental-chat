@@ -22,4 +22,6 @@ def sendRequest(prompt):
         return(f"Request failed with status code: {response.status_code}")
 
 if __name__=="__main__":
-    print(sendRequest("I am feeling very sad today."))
+    response = sendRequest("Are we ready to chat?")
+    messages.append({"role": "assistant", "content": response})
+    print(response)
