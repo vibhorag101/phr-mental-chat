@@ -19,22 +19,6 @@ client = OpenAI(
     base_url="http://192.168.3.74:8080/v1",
     api_key="-"
 )
-
-def predict_suicide(text):
-    url = 'http://192.168.3.74:6006/suicide'
-    data = {'message': text}
-    response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
-    if response.status_code == 200:
-        result = response.json()
-        return(result)
-    
-def predict_threat(text):
-    url = 'http://192.168.3.74:6006/threat'
-    data = {'message': text}
-    response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
-    if response.status_code == 200:
-        result = response.json()
-        return(result)
     
 def response_guard(text):
     url = 'http://192.168.3.74:6006/safety'

@@ -14,8 +14,10 @@ def chat_with_tgi(prompt, history=history):
     history.append({"role": "user", "content": prompt.strip()})
     chat_completion = client.chat.completions.create(
         model="tgi",
-        # add prompt to the messages
-        messages=history
+        messages=history,
+        max_tokens=1024,
+        temperature=1,
+        top_p=0.9
     )
     response = chat_completion.choices[0].message.content.strip()
     history.append({"role": "assistant", "content": response})
