@@ -74,10 +74,11 @@ def get_LLAMA_response(
         raise ValueError(f"Input token length is {inputs['input_ids'].shape[1]}, which exceeds the maximum of {MAX_INPUT_TOKEN_LENGTH}.")
     output_ids = model.generate(
     **inputs,
-    max_length=1024,
+    max_length = 4096, # sum of input_tokens + max_new_tokens
+    max_new_tokens=max_new_tokens,
     do_sample=True,
-    top_p=0.95,
-    top_k=50,
-    temperature=1)
+    top_p=top_p,
+    top_k=top_k,
+    temperature=temperature)
     output_text = tokenizer.decode(output_ids[0][input_ids.shape[1]:], skip_special_tokens=True)
     return output_text

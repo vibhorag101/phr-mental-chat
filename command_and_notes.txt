@@ -14,8 +14,11 @@ Observations:
 3. tokenizer.decode() adds spaces manually, taking care of the special tokens and punctuation marks.
 4. In an LLM we can control the max_number_of_input_tokens which is called context length, and max_new_tokens which specifies the max no. of tokens to generate
 5. in HF TGI, max-total-tokens is specified (default 2048) which is the max possible sum of input and output tokens.
+6. In model.generate() we can specify max_new_tokens and max_length(sum of input_prompt_tokens and max_new_tokens). There is no parameters of max_number_of_input_tokens and, we need to check that manually before giving a call to the model.generate().
+https://huggingface.co/docs/transformers/en/main_classes/text_generation
+
 
 
 Training Observations
 1. In case of contextual models like BERT, we should not do excess preprocessing like removing stop words, stemming, lemmatization etc. as this might take away the context of the sentence, which pre-trained models like BERT are good at capturing. The issue was observed in suicide-prediction model where model performed better after training on the less processed dataset without stopword removal, punctuation remover and lemmatization.
-2.
+
