@@ -1,7 +1,6 @@
 absl-py==2.1.0
 accelerate==0.26.1
 addict==2.4.0
-aiobotocore==2.12.1
 aiofiles==23.2.1
 aiohttp==3.9.3
 aioitertools==0.11.0
@@ -14,7 +13,6 @@ appdirs==1.4.4
 art==6.1
 async-timeout==4.0.3
 attrs==23.2.0
-awscli==1.32.61
 bitsandbytes==0.43.0
 black==24.2.0
 cachetools==5.3.3
